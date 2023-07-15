@@ -53,6 +53,7 @@ The .EXE version can be run in Windows 10.
 Things To-Do
 ------------
 
+| Fix Tools Tips.
 | Add Task Duration settings.
 | Instruction manual.
 | Cheat codes.
