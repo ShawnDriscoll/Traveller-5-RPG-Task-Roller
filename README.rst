@@ -36,6 +36,13 @@ Some Things Required
   For the MS Zira and MS David voices (it will try to detect other SAPI voices installed).
 
 
+What's in the Initial Release?
+------------------------------
+
+.. image:: images/video.png
+    :target: https://www.youtube.com/watch?v=bVR5ZZbAGLc
+
+
 Don't Have Python?
 ------------------
 
@@ -53,7 +60,7 @@ The .EXE version can be run in Windows 10.
 Things To-Do
 ------------
 
-| Fix Tools Tips.
+| Fix Tool Tips.
 | Add Task Duration settings.
 | Instruction manual.
 | Cheat codes.
