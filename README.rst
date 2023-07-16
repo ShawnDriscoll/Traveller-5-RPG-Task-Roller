@@ -60,17 +60,26 @@ The .EXE version can be run in Windows 10.
 Things To-Do
 ------------
 
-| Fix Tool Tips.
 | Add Task Duration settings.
 | Instruction manual.
 | Cheat codes.
 |ss|
 
+| Add more things to Clear All.
+| Fix Tool Tips.
 | Start on a To-Do.
 
 |se|
 
 **Known History**
+
+* v0.0.2b
+
+  (Optional) FATE rolls were using the wrong random(). Fixed.
+  Cautious, Hasty, Extra Hasty buttons now toggle each other on/off.
+  Clear All clears more stuff.
+  Updated Tool Tips.
+  Computer now speaks die roll input.
 
 * v0.0.1b
 

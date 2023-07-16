@@ -1,11 +1,11 @@
 #
-#   Traveller5 Task Roller 0.0.1 Beta for Windows 10
+#   Traveller5 Task Roller 0.0.2 Beta for Windows 10
 #   Written for Python 3.11.4
 #
 ##############################################################
 
 """
-Traveller5 Task Roller 0.0.1 Beta for Windows 10
+Traveller5 Task Roller 0.0.2 Beta for Windows 10
 --------------------------------------------------------
 
 This program makes various dice rolls and calculates their graphs if needed.
@@ -29,8 +29,8 @@ from matplotlib import font_manager
 import logging
 
 __author__ = 'Shawn Driscoll <shawndriscoll@hotmail.com>\nshawndriscoll.blogspot.com'
-__app__ = 'Traveller5 Task Roller 0.0.1 Beta'
-__version__ = '0.0.1b'
+__app__ = 'Traveller5 Task Roller 0.0.2 Beta'
+__version__ = '0.0.2b'
 __py_version_req__ = (3,11,4)
 __expired_tag__ = False
 
@@ -41,6 +41,7 @@ voice = {}
 rate = -50
 volume = 1.0
 
+# Look for installed TTS voices
 for i in voice_list:
     rec = {}
     name_found = i.name[i.name.find(' ')+1:]
@@ -50,9 +51,6 @@ for i in voice_list:
     rec['Rate'] = rate
     rec['Volume'] = volume
     voice[name_found] = rec
-
-#print(voices)
-#print(voice)
 
 rate = engine.getProperty('rate')
 volume = engine.getProperty('volume')
@@ -132,6 +130,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.phantom_char.toggled.connect(self.phantom_char_toggled)
         self.skill.valueChanged.connect(self.skill_changed)
         self.phantom_skill.toggled.connect(self.phantom_skill_toggled)
+        self.modifier.valueChanged.connect(self.modifier_changed)
         
         self.rollButton.clicked.connect(self.rollButton_clicked)
         self.actionRoll_Dice.triggered.connect(self.rollButton_clicked)
@@ -139,8 +138,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.clear_graphButton.clicked.connect(self.clear_graphButton_clicked)
         self.actionClear_Graph.triggered.connect(self.clear_graphButton_clicked)
         
-        self.clearButton.clicked.connect(self.clearButton_clicked)
-        self.actionClear_All.triggered.connect(self.clearButton_clicked)
+        self.clearButton.clicked.connect(self.clear_allButton_clicked)
+        self.actionClear_All.triggered.connect(self.clear_allButton_clicked)
         
         self.actionAbout_Traveller5_Task_Roller.triggered.connect(self.actionAbout_triggered)
         
@@ -172,8 +171,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.tih = False
         self.tih_die = 0
         self.tihButton_clicked()
-        self.phantom_charBox_checked = True
-        self.phantom_skillBox_checked = True
+        self.phantom_skillBox_checked = False
 
 
         log.info('PyQt5 MainWindow initialized.')
@@ -185,7 +183,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             log.warning(__app__ + ' expiration detected...')
             self.alert_window()
             '''
-            display alert message and disable all the things
+            Display alert message and disable all the things
             '''
             self.taskDifficulty.setDisabled(True)
             self.diceType.setDisabled(True)
@@ -213,7 +211,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def taskDifficulty_changed(self):
         '''
-        Clear die modifier and last roll result
+        Clear values when Task Difficulty is changed
         '''
         self.num_dice = self.taskDifficulty.currentIndex() + 1
         self.diceType.setText(str(self.num_dice) + 'D')
@@ -237,7 +235,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.tih = False
         self.tihLabel.setText('')
         self.tih_die = 0
-        self.tih = False
         self.tihButton_clicked()
         self.clear_graph = True
         self.draw_graph()
@@ -254,8 +251,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         '''
         if not self.phantom_skillBox_checked:
             self.skill.setValue(0)
-            self.modifier.setValue(0)
+        self.modifier.setValue(0)
         self.diceRoll.setText('')
+        self.taskResult.setText('')
         self.rollInput.clear()
     
     def skill_changed(self):
@@ -264,6 +262,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         '''
         self.modifier.setValue(0)
         self.diceRoll.setText('')
+        self.taskResult.setText('')
         self.rollInput.clear()
         if self.skill.value() < self.num_dice:
             self.tih = False
@@ -271,6 +270,14 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         else:
             self.tih = True
             self.tihButton_clicked()
+    
+    def modifier_changed(self):
+        '''
+        Clear last roll result if modifier is changed
+        '''
+        self.diceRoll.setText('')
+        self.taskResult.setText('')
+        self.rollInput.clear()
 
     def cautiousButton_clicked(self):
         '''
@@ -284,6 +291,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.cautious = True
             self.cautiousLabel.setText('-1D')
             self.cautious_die = -1
+        self.hasty = False
+        self.hastyLabel.setText('')
+        self.hasty_die = 0
+        self.extrahasty = False
+        self.extrahastyLabel.setText('')
+        self.extrahasty_die = 0
     
     def hastyButton_clicked(self):
         '''
@@ -297,6 +310,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.hasty = True
             self.hastyLabel.setText('+1D')
             self.hasty_die = 1
+        self.cautious = False
+        self.cautiousLabel.setText('')
+        self.cautious_die = 0
+        self.extrahasty = False
+        self.extrahastyLabel.setText('')
+        self.extrahasty_die = 0
     
     def extrahastyButton_clicked(self):
         '''
@@ -310,6 +329,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.extrahasty = True
             self.extrahastyLabel.setText('+2D')
             self.extrahasty_die = 2
+        self.cautious = False
+        self.cautiousLabel.setText('')
+        self.cautious_die = 0
+        self.hasty = False
+        self.hastyLabel.setText('')
+        self.hasty_die = 0
 
     def tihButton_clicked(self):
         '''
@@ -327,7 +352,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def rollButton_clicked(self):
         '''
         Roll button was clicked.
-        Try to roll under or equal to the task characteristic plus modifiers.
+        Try to roll under or equal to the characteristic asset + skills asset + plus modifiers.
         '''
         self.die_pool = self.num_dice
 
@@ -349,6 +374,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         #Auto success?
         if self.die_pool > 0:
+            # No.
             self.dice_type = str(self.die_pool) + 'D'
 
             self.value_to_beat = self.characteristic.value() + self.skill.value() + self.modifier.value()
@@ -377,11 +403,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 engine.say(temp)
                 engine.runAndWait()
         else:
-            self.taskresult.setText('Succeeded')
+            # Yes.
+            self.taskResult.setText('Succeeded')
             self.clear_graph = True
             self.draw_graph()
             if not self.ms_voice_muted:
-                engine.say('automatic success')
+                engine.say('automatically succeeded')
                 engine.runAndWait()
     
     def manual_roll(self):
@@ -394,8 +421,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         if dice_entered == 'INFO' or dice_entered == 'TEST' or dice_entered == 'MINMAXAVG' or dice_entered == 'HEX' or dice_entered == 'EHEX':
             roll_returned = roll(dice_entered)
         else:
-            roll_returned = roll(dice_entered)
             log.debug('Rolling manually.')
+            roll_returned = roll(dice_entered)
+            
             # Was the roll a valid one?
             if roll_returned == -9999:
                 returned_line = dice_entered + ' = ' + '<span style=" color:#ff0000;">' + str(roll_returned) + '</span>'
@@ -419,7 +447,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.rolled_manually = True
             if self.roll_result != -9999:
                 if not self.ms_voice_muted:
-                    engine.say('Calculating input')
+                    engine.say('Calculating ' + dice_entered)
                     engine.runAndWait()
                 self.bar_color = 'black'
                 self.draw_graph()
@@ -458,7 +486,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.clear_graph = True
         self.draw_graph()
 
-    def clearButton_clicked(self):
+    def clear_allButton_clicked(self):
         '''
         Clear/reset all fields
         '''
@@ -471,6 +499,18 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.rollInput.clear()
         self.rollBrowser.clear()
         self.sampleBrowser.clear()
+        self.cautious = False
+        self.cautiousLabel.setText('')
+        self.cautious_die = 0
+        self.hasty = False
+        self.hastyLabel.setText('')
+        self.hasty_die = 0
+        self.extrahasty = False
+        self.extrahastyLabel.setText('')
+        self.extrahasty_die = 0
+        self.tih = True
+        self.tihLabel.setText('<span style=" color:#ff0000;">+1D!</span>')
+        self.tih_die = 1
         self.clear_graph = True
         self.draw_graph()
         
@@ -701,9 +741,9 @@ if __name__ == '__main__':
 #                         filemode = 'w')
 
     log = logging.getLogger('Traveller5 Task Roller')
-    log.setLevel(logging.INFO)
+    #log.setLevel(logging.INFO)
     #log.setLevel(logging.DEBUG)
-    #log.setLevel(logging.WARNING)
+    log.setLevel(logging.WARNING)
 
     if not os.path.exists('Logs'):
         os.mkdir('Logs')
@@ -728,8 +768,8 @@ if __name__ == '__main__':
             __app__ += ' [EXPIRED]'
 
         app = QApplication(sys.argv)
-        #app.setQuitOnLastWindowClosed(False)
-        app.setQuitOnLastWindowClosed(True)
+        app.setQuitOnLastWindowClosed(False)
+        #app.setQuitOnLastWindowClosed(True)
         
         #print(QStyleFactory.keys()) #use to find a setStyle you like, instead of 'Fusion'
         
@@ -781,7 +821,7 @@ if __name__ == '__main__':
         hideApp.triggered.connect(MainApp.hide_app)
         menu.addAction(hideApp)
 
-        quit = QAction("Quit")
+        quit = QAction("Exit")
         quit.triggered.connect(app.quit)
         menu.addAction(quit)
         
@@ -813,7 +853,7 @@ if __name__ == '__main__':
         print('     C:\>traveller5_task_roller.py 2d6')
     elif sys.argv[1] in ['-v', '/v', '--version']:
         print()
-        print('     traveller5_task_roller, release version ' + __version__ + ' for Python ' + __py_version_req__)
+        print('     traveller5_task_roller, release version ' + __version__ + ' for Python ' + str(__py_version_req__))
     else:
         print()
         dice = ''
@@ -836,7 +876,7 @@ if __name__ == '__main__':
                     print("Your '%s' roll is %s." % (dice, num))
                     log.info("The direct call to traveller5_task_roller with '%s' resulted in %s." % (dice, num))
                 elif dice == 'INFO':
-                    print('traveller5_task_roller, release version ' + __version__ + ' for Python ' + __py_version_req__)
+                    print('traveller5_task_roller, release version ' + __version__ + ' for Python ' + str(__py_version_req__))
             else:
                 print('Typo of some sort --> ' + dice)
         else:
@@ -849,4 +889,4 @@ if __name__ == '__main__':
                 print("Your '%s' roll is %s." % (dice, num))
                 log.info("The direct call to traveller5_task_roller with '%s' resulted in %s." % (dice, num))
             elif dice == 'INFO':
-                print('traveller5_task_roller, release version ' + __version__ + ' for Python ' + __py_version_req__)
+                print('traveller5_task_roller, release version ' + __version__ + ' for Python ' + str(__py_version_req__))
