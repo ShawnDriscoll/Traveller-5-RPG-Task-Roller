@@ -1,11 +1,11 @@
 #
-#   Traveller5 Task Roller 0.0.2 Beta for Windows 10
+#   Traveller5 Task Roller 0.1.0 Beta for Windows 10
 #   Written for Python 3.11.4
 #
 ##############################################################
 
 """
-Traveller5 Task Roller 0.0.2 Beta for Windows 10
+Traveller5 Task Roller 0.1.0 Beta for Windows 10
 --------------------------------------------------------
 
 This program makes various dice rolls and calculates their graphs if needed.
@@ -29,8 +29,8 @@ from matplotlib import font_manager
 import logging
 
 __author__ = 'Shawn Driscoll <shawndriscoll@hotmail.com>\nshawndriscoll.blogspot.com'
-__app__ = 'Traveller5 Task Roller 0.0.2 Beta'
-__version__ = '0.0.2b'
+__app__ = 'Traveller5 Task Roller 0.1.0 Beta'
+__version__ = '0.1.0b'
 __py_version_req__ = (3,11,4)
 __expired_tag__ = False
 
@@ -57,6 +57,7 @@ volume = engine.getProperty('volume')
 
 task_difficulties = ['Easy', 'Average', 'Difficult', 'Formidable', 'Staggering', 'Hopeless', 'Impossible', 'Beyond Impossible']
 roll_accuracies = ['100', '500', '1000', '5000', '10000', '50000']
+rough_estimates = ['Optional', 'Minutes', 'An Hour', 'All Day', 'A Week', 'A Month']
 
 class aboutDialog(QDialog, Ui_aboutDialog):
     def __init__(self):
@@ -111,8 +112,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         
         for i in range(len(task_difficulties)):
             self.taskDifficulty.addItem(task_difficulties[i])
-
         self.taskDifficulty.setCurrentIndex(1)
+
+        self.variableDuration.currentIndexChanged.connect(self.variableDuration_changed)
+        
+        for i in range(len(rough_estimates)):
+            self.variableDuration.addItem(rough_estimates[i])
+        self.variableDuration.setCurrentIndex(0)
 
         self.cautiousButton.clicked.connect(self.cautiousButton_clicked)
         self.hastyButton.clicked.connect(self.hastyButton_clicked)
@@ -121,8 +127,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         
         for i in range(len(roll_accuracies)):
             self.rollaccuracyType.addItem(roll_accuracies[i])
-        
         self.roll_accuracy = 5000
+        log.info('Roll accuracy set to: ' + str(self.roll_accuracy))
         self.rollaccuracyType.setCurrentIndex(3)
         self.rollaccuracyType.currentIndexChanged.connect(self.rollaccuracyType_changed)
         
@@ -154,11 +160,17 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         
         self.rollInput.returnPressed.connect(self.manual_roll)
 
+        # Build voice button (hopefully this computer has voices)
+        j = 0
         for i in voices:
             self.voiceBox.addItem(i)
+            if j > 0:
+                log.info('SAPI voice added: ' + i)
+            j += 1
         self.voiceBox.setCurrentIndex(0)
         self.voiceBox.currentIndexChanged.connect(self.voiceBox_changed)
 
+        # Initialize variables before they're called on (will add more if found)
         self.clear_graph = False
         self.rolled_manually = False
         self.ms_voice_muted = True
@@ -172,7 +184,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.tih_die = 0
         self.tihButton_clicked()
         self.phantom_skillBox_checked = False
-
 
         log.info('PyQt5 MainWindow initialized.')
         
@@ -215,6 +226,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         '''
         self.num_dice = self.taskDifficulty.currentIndex() + 1
         self.diceType.setText(str(self.num_dice) + 'D')
+        log.info('Task Difficulty: ' + self.taskDifficulty.currentText() + ' (' + str(self.num_dice) + 'D)')
+        self.variableDuration.setCurrentIndex(0)
         self.characteristic.setValue(0)
         self.phantom_char.setChecked(False)
         self.skill.setValue(0)
@@ -238,12 +251,37 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.tihButton_clicked()
         self.clear_graph = True
         self.draw_graph()
+    
+    def variableDuration_changed(self):
+        '''
+        Ignore Task Duration if not selected (value 0)
+        '''
+        self.chosen_duration = self.variableDuration.currentIndex()
+        log.info('Variable Duration: ' + self.variableDuration.currentText())
+
+        if self.chosen_duration == 0:
+            self.taskDuration.setText('')
+            self.dice_were_rolled = False
+        if self.dice_were_rolled:
+            if self.chosen_duration == 1:
+                self.taskDuration.setText(str(10 + roll('flux')) + ' Minutes')
+            if self.chosen_duration == 2:
+                self.taskDuration.setText(str(60 + roll('flux') * 10) + ' Minutes')
+            if self.chosen_duration == 3:
+                self.taskDuration.setText(str(10 + roll('flux')) + ' Hours')
+            if self.chosen_duration == 4:
+                self.taskDuration.setText(str(6 + roll('flux')) + ' Days')
+            if self.chosen_duration == 5:
+                self.taskDuration.setText(str(6 + roll('flux')) + ' Weeks')
+        else:
+            self.taskDuration.setText('')
 
     def rollaccuracyType_changed(self):
         '''
         Choose the accuracy of the roll chart
         '''
         self.roll_accuracy = int(roll_accuracies[self.rollaccuracyType.currentIndex()])
+        log.info('Roll accuracy set to: ' + str(self.roll_accuracy))
             
     def characteristic_changed(self):
         '''
@@ -287,16 +325,32 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.cautious = False
             self.cautiousLabel.setText('')
             self.cautious_die = 0
+            self.hastyButton.setDisabled(False)
+            self.extrahastyButton.setDisabled(False)
         else:
             self.cautious = True
             self.cautiousLabel.setText('-1D')
             self.cautious_die = -1
+            self.hastyButton.setDisabled(True)
+            self.extrahastyButton.setDisabled(True)
         self.hasty = False
         self.hastyLabel.setText('')
         self.hasty_die = 0
         self.extrahasty = False
         self.extrahastyLabel.setText('')
         self.extrahasty_die = 0
+
+        # Update variable duration if not optional
+        self.chosen_duration = self.variableDuration.currentIndex()
+        if self.chosen_duration != 0:
+            if not self.cautious:
+                if self.chosen_duration > 1:
+                    self.variableDuration.setCurrentIndex(self.chosen_duration - 1)
+            if self.cautious:
+                if self.chosen_duration < 5:
+                    self.variableDuration.setCurrentIndex(self.chosen_duration + 1)
+
+
     
     def hastyButton_clicked(self):
         '''
@@ -306,16 +360,30 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.hasty = False
             self.hastyLabel.setText('')
             self.hasty_die = 0
+            self.cautiousButton.setDisabled(False)
+            self.extrahastyButton.setDisabled(False)
         else:
             self.hasty = True
             self.hastyLabel.setText('+1D')
             self.hasty_die = 1
+            self.cautiousButton.setDisabled(True)
+            self.extrahastyButton.setDisabled(True)
         self.cautious = False
         self.cautiousLabel.setText('')
         self.cautious_die = 0
         self.extrahasty = False
         self.extrahastyLabel.setText('')
         self.extrahasty_die = 0
+
+        # Update variable duration if not optional
+        self.chosen_duration = self.variableDuration.currentIndex()
+        if self.chosen_duration != 0:
+            if self.hasty:
+                if self.chosen_duration > 1:
+                    self.variableDuration.setCurrentIndex(self.chosen_duration - 1)
+            if not self.hasty:
+                if self.chosen_duration < 5:
+                    self.variableDuration.setCurrentIndex(self.chosen_duration + 1)
     
     def extrahastyButton_clicked(self):
         '''
@@ -325,16 +393,30 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.extrahasty = False
             self.extrahastyLabel.setText('')
             self.extrahasty_die = 0
+            self.cautiousButton.setDisabled(False)
+            self.hastyButton.setDisabled(False)
         else:
             self.extrahasty = True
             self.extrahastyLabel.setText('+2D')
             self.extrahasty_die = 2
+            self.cautiousButton.setDisabled(True)
+            self.hastyButton.setDisabled(True)
         self.cautious = False
         self.cautiousLabel.setText('')
         self.cautious_die = 0
         self.hasty = False
         self.hastyLabel.setText('')
         self.hasty_die = 0
+
+        # Update variable duration if not optional
+        self.chosen_duration = self.variableDuration.currentIndex()
+        if self.chosen_duration != 0:
+            if self.extrahasty:
+                if self.chosen_duration > 2:
+                    self.variableDuration.setCurrentIndex(self.chosen_duration - 2)
+            if not self.extrahasty:
+                if self.chosen_duration < 4:
+                    self.variableDuration.setCurrentIndex(self.chosen_duration + 2)
 
     def tihButton_clicked(self):
         '''
@@ -355,22 +437,34 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         Try to roll under or equal to the characteristic asset + skills asset + plus modifiers.
         '''
         self.die_pool = self.num_dice
+        log.info('Starting die pool: ' + str(self.num_dice) + 'D')
 
         # Cautious?
         if self.cautious == True:
             self.die_pool += self.cautious_die
+            log.info('Cautious die: ' + str(self.cautious_die))
         
         # Hasty?
         if self.hasty == True:
             self.die_pool += self.hasty_die
+            log.info('Hasty die: ' + str(self.hasty_die))
         
         # Extra Hasty?
         if self.extrahasty == True:
             self.die_pool += self.extrahasty_die
+            log.info('Extra Hasty die: ' + str(self.extrahasty_die))
         
         # TIH!?
         if self.tih == True:
             self.die_pool += self.tih_die
+            log.info('TIH! die: ' + str(self.tih_die))
+        
+        log.info('Total die pool: ' + str(self.die_pool) + 'D')
+
+        # Display Task Duration if one was chosen
+        self.dice_were_rolled = True
+        self.variableDuration_changed()
+        self.dice_were_rolled = False
 
         #Auto success?
         if self.die_pool > 0:
@@ -378,14 +472,17 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.dice_type = str(self.die_pool) + 'D'
 
             self.value_to_beat = self.characteristic.value() + self.skill.value() + self.modifier.value()
-            self.roll_result = roll(self.dice_type)
+            log.info('Value to beat: ' + str(self.characteristic.value()) + ' + ' + str(self.skill.value()) + ' + ' + str(self.modifier.value()))
+            self.roll_result = roll(self.dice_type + '# roll made')
             self.diceRoll.setText(str(self.roll_result))
             if self.roll_result <= self.value_to_beat:
                 temp = 'Succeeded'
                 self.bar_color = 'g'
+                log.info('Task succeeded!')
             else:
                 temp = 'Failed'
                 self.bar_color = 'r'
+                log.info('Task failed!')
             self.taskResult.setText(temp)
             self.rollBrowser.append(self.dice_type + ' = ' + self.diceRoll.text())
             sample = '[ '
@@ -394,6 +491,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             sample += ']'
             self.sampleBrowser.clear()
             self.sampleBrowser.append(sample)
+            log.info('Sample for die type: ' + sample)
             self.rollInput.clear()
             if not self.ms_voice_muted:
                 engine.say('Rolling ' + self.dice_type)
@@ -404,6 +502,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 engine.runAndWait()
         else:
             # Yes.
+            log.info('0D roll. Auto success!')
             self.taskResult.setText('Succeeded')
             self.clear_graph = True
             self.draw_graph()
@@ -441,6 +540,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 sample = ''
             self.sampleBrowser.clear()
             self.sampleBrowser.append(sample)
+            log.info('Sample for die type: ' + sample)
             self.roll_result = roll_returned
             self.diceRoll.setText('')
             self.taskResult.setText('')
@@ -741,9 +841,9 @@ if __name__ == '__main__':
 #                         filemode = 'w')
 
     log = logging.getLogger('Traveller5 Task Roller')
-    #log.setLevel(logging.INFO)
+    log.setLevel(logging.INFO)
     #log.setLevel(logging.DEBUG)
-    log.setLevel(logging.WARNING)
+    #log.setLevel(logging.WARNING)
 
     if not os.path.exists('Logs'):
         os.mkdir('Logs')

@@ -73,6 +73,11 @@ Things To-Do
 
 **Known History**
 
+* v0.1.0b
+
+  Added Variable Duration. Can be used as an option.
+  Logging added to most features.
+
 * v0.0.2b
 
   (Optional) FATE rolls were using the wrong random(). Fixed.
