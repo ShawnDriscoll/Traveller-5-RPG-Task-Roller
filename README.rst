@@ -36,10 +36,17 @@ Some Things Required
   For the MS Zira and MS David voices (it will try to detect other SAPI voices installed).
 
 
+What's in v0.1.0?
+-----------------
+
+.. image:: images/video2.png
+    :target: https://www.youtube.com/watch?v=argU12wFpEc
+	
+
 What's in the Initial Release?
 ------------------------------
 
-.. image:: images/video.png
+.. image:: images/video1.png
     :target: https://www.youtube.com/watch?v=bVR5ZZbAGLc
 
 
