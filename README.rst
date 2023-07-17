@@ -60,11 +60,11 @@ The .EXE version can be run in Windows 10.
 Things To-Do
 ------------
 
-| Add Task Duration settings.
 | Instruction manual.
 | Cheat codes.
 |ss|
 
+| Add Task Duration settings.
 | Add more things to Clear All.
 | Fix Tool Tips.
 | Start on a To-Do.
