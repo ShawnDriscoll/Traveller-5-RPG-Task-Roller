@@ -1,11 +1,11 @@
 #
-#   Traveller5 Task Roller 0.1.1 Beta for Windows 10
+#   Traveller5 Task Roller 0.1.5 Beta for Windows 10
 #   Written for Python 3.11.4
 #
 ##############################################################
 
 """
-Traveller5 Task Roller 0.1.1 Beta for Windows 10
+Traveller5 Task Roller 0.1.5 Beta for Windows 10
 --------------------------------------------------------
 
 This program makes various dice rolls and calculates their graphs if needed.
@@ -29,8 +29,8 @@ from matplotlib import font_manager
 import logging
 
 __author__ = 'Shawn Driscoll <shawndriscoll@hotmail.com>\nshawndriscoll.blogspot.com'
-__app__ = 'Traveller5 Task Roller 0.1.1 Beta'
-__version__ = '0.1.1b'
+__app__ = 'Traveller5 Task Roller 0.1.5 Beta'
+__version__ = '0.1.5b'
 __py_version_req__ = (3,11,4)
 __expired_tag__ = False
 
@@ -170,6 +170,15 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.voiceBox.setCurrentIndex(0)
         self.voiceBox.currentIndexChanged.connect(self.voiceBox_changed)
 
+        # Look for installed GUI styles
+        self.styles_installed = []
+        for i in QStyleFactory.keys():
+            self.styleButton.addItem(i)
+            self.styles_installed.append(i)
+            log.info("Found '" + i + "' style")
+        self.styleButton.setCurrentIndex(0)
+        self.styleButton.currentIndexChanged.connect(self.styleButton_changed)
+
         # Initialize variables before they're called on (will add more if found)
         self.clear_graph = False
         self.rolled_manually = False
@@ -216,6 +225,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.rollInput.setDisabled(True)
             self.rollBrowser.setDisabled(True)
             self.sampleBrowser.setDisabled(True)
+            self.styleButton.setDisabled(True)
             self.actionAbout_Traveller5_Task_Roller.setDisabled(True)
             self.actionRoll_Dice.setDisabled(True)
             self.actionClear_Graph.setDisabled(True)
@@ -350,8 +360,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             if self.cautious:
                 if self.chosen_duration < 5:
                     self.variableDuration.setCurrentIndex(self.chosen_duration + 1)
-
-
     
     def hastyButton_clicked(self):
         '''
@@ -798,7 +806,15 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             engine.setProperty('rate', rate + voice[speaker]['Rate'])
             engine.setProperty('volume', volume + voice[speaker]['Volume'])
             engine.setProperty('voice', voice[speaker]['Name'])
-            
+    
+    def styleButton_changed(self):
+        '''
+        A style was chosen
+        '''
+        chosen_style = self.styles_installed[self.styleButton.currentIndex()]
+        QApplication.setStyle(chosen_style)
+        log.info('Chosen style: ' + chosen_style)
+
     def quitButton_clicked(self):
         '''
         Exit this app (using task tray icon)
@@ -872,7 +888,7 @@ if __name__ == '__main__':
         app.setQuitOnLastWindowClosed(False)
         #app.setQuitOnLastWindowClosed(True)
         
-        #print(QStyleFactory.keys()) #use to find a setStyle you like, instead of 'Fusion'
+        #print(QStyleFactory.keys()) #use to find a different setStyle
         
         #app.setStyle('Fusion')
         

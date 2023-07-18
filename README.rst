@@ -80,6 +80,10 @@ Things To-Do
 
 **Known History**
 
+* v0.1.5b
+
+  Selecting GUI style now available.
+
 * v0.1.1b
 
   Not every thing would disable when beta expired.
