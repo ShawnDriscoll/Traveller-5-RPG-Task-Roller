@@ -80,6 +80,10 @@ Things To-Do
 
 **Known History**
 
+* v0.1.1b
+
+  Not every thing would disable when beta expired.
+
 * v0.1.0b
 
   Added Variable Duration. Can be used as an option.

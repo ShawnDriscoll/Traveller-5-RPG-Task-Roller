@@ -439,7 +439,7 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "Traveller5 Task Roller 0.1.0 (Beta)"))
+        MainWindow.setWindowTitle(_translate("MainWindow", "Traveller5 Task Roller 0.1.1 (Beta)"))
         self.modifier.setToolTip(_translate("MainWindow", "Dice Modifier"))
         self.taskDifficulty.setToolTip(_translate("MainWindow", "Task Difficulty"))
         self.label.setText(_translate("MainWindow", "+"))

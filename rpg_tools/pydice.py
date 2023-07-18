@@ -12,9 +12,9 @@
 '''
 pydice module containing roll()
 
-Usage:
-    from pydice import roll
-    print(roll('2D6'))
+Usage:\n
+    from pydice import roll\n
+    print(roll('2D6'))\n
 
     Will roll two 6-sided dice, returning an integer
 '''

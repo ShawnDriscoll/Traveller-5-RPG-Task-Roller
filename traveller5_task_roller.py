@@ -1,11 +1,11 @@
 #
-#   Traveller5 Task Roller 0.1.0 Beta for Windows 10
+#   Traveller5 Task Roller 0.1.1 Beta for Windows 10
 #   Written for Python 3.11.4
 #
 ##############################################################
 
 """
-Traveller5 Task Roller 0.1.0 Beta for Windows 10
+Traveller5 Task Roller 0.1.1 Beta for Windows 10
 --------------------------------------------------------
 
 This program makes various dice rolls and calculates their graphs if needed.
@@ -29,8 +29,8 @@ from matplotlib import font_manager
 import logging
 
 __author__ = 'Shawn Driscoll <shawndriscoll@hotmail.com>\nshawndriscoll.blogspot.com'
-__app__ = 'Traveller5 Task Roller 0.1.0 Beta'
-__version__ = '0.1.0b'
+__app__ = 'Traveller5 Task Roller 0.1.1 Beta'
+__version__ = '0.1.1b'
 __py_version_req__ = (3,11,4)
 __expired_tag__ = False
 
@@ -197,6 +197,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             Display alert message and disable all the things
             '''
             self.taskDifficulty.setDisabled(True)
+            self.variableDuration.setDisabled(True)
             self.diceType.setDisabled(True)
             self.rollaccuracyType.setDisabled(True)
             self.voiceBox.setDisabled(True)
@@ -929,7 +930,6 @@ if __name__ == '__main__':
         
         # Add the menu to the tray
         tray.setContextMenu(menu)
-        
         
         tray.activated.connect(MainApp.activate)
         
