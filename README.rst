@@ -80,6 +80,10 @@ Things To-Do
 
 **Known History**
 
+* v0.1.6b
+
+  **Clear Roll History** button added.
+
 * v0.1.5b
 
   Selecting GUI style now available.
@@ -95,7 +99,7 @@ Things To-Do
 
 * v0.0.2b
 
-  (Optional) FATE rolls were using the wrong random(). Fixed.
+  (Optional) Fate rolls were using the wrong random(). Fixed.
   Cautious, Hasty, Extra Hasty buttons now toggle each other on/off.
   Clear All clears more stuff.
   Updated Tool Tips.

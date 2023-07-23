@@ -1,11 +1,11 @@
 #
-#   Traveller5 Task Roller 0.1.5 Beta for Windows 10
+#   Traveller5 Task Roller 0.1.6 Beta for Windows 10
 #   Written for Python 3.11.4
 #
 ##############################################################
 
 """
-Traveller5 Task Roller 0.1.5 Beta for Windows 10
+Traveller5 Task Roller 0.1.6 Beta for Windows 10
 --------------------------------------------------------
 
 This program makes various dice rolls and calculates their graphs if needed.
@@ -29,8 +29,8 @@ from matplotlib import font_manager
 import logging
 
 __author__ = 'Shawn Driscoll <shawndriscoll@hotmail.com>\nshawndriscoll.blogspot.com'
-__app__ = 'Traveller5 Task Roller 0.1.5 Beta'
-__version__ = '0.1.5b'
+__app__ = 'Traveller5 Task Roller 0.1.6 Beta'
+__version__ = '0.1.6b'
 __py_version_req__ = (3,11,4)
 __expired_tag__ = False
 
@@ -140,6 +140,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         
         self.rollButton.clicked.connect(self.rollButton_clicked)
         self.actionRoll_Dice.triggered.connect(self.rollButton_clicked)
+
+        self.clear_rollButton.clicked.connect(self.clear_rollButton_clicked)
+        self.actionClear_Roll_History.triggered.connect(self.clear_rollButton_clicked)
 
         self.clear_graphButton.clicked.connect(self.clear_graphButton_clicked)
         self.actionClear_Graph.triggered.connect(self.clear_graphButton_clicked)
@@ -587,6 +590,14 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         else:
             self.skill.setValue(0)
             self.skill.setDisabled(False)
+    
+    def clear_rollButton_clicked(self):
+        '''
+        Clear the roll history
+        '''
+        self.rollInput.clear()
+        self.rollBrowser.clear()
+        self.sampleBrowser.clear()
     
     def clear_graphButton_clicked(self):
         '''
