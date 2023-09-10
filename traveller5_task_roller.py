@@ -897,7 +897,6 @@ if __name__ == '__main__':
 
         app = QApplication(sys.argv)
         app.setQuitOnLastWindowClosed(False)
-        #app.setQuitOnLastWindowClosed(True)
         
         #print(QStyleFactory.keys()) #use to find a different setStyle
         
