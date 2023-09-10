@@ -1,11 +1,11 @@
 #
-#   Traveller5 Task Roller 0.1.6 Beta for Windows 10
+#   Traveller5 Task Roller 0.1.7 Beta for Windows 10
 #   Written for Python 3.11.4
 #
 ##############################################################
 
 """
-Traveller5 Task Roller 0.1.6 Beta for Windows 10
+Traveller5 Task Roller 0.1.7 Beta for Windows 10
 --------------------------------------------------------
 
 This program makes various dice rolls and calculates their graphs if needed.
@@ -29,8 +29,8 @@ from matplotlib import font_manager
 import logging
 
 __author__ = 'Shawn Driscoll <shawndriscoll@hotmail.com>\nshawndriscoll.blogspot.com'
-__app__ = 'Traveller5 Task Roller 0.1.6 Beta'
-__version__ = '0.1.6b'
+__app__ = 'Traveller5 Task Roller 0.1.7 Beta'
+__version__ = '0.1.7b'
 __py_version_req__ = (3,11,4)
 __expired_tag__ = False
 
@@ -972,6 +972,7 @@ if __name__ == '__main__':
         print(__app__)
         
     elif sys.argv[1] in ['-h', '/h', '--help', '-?', '/?']:
+        log.info('Traveller5 Task Roller was run from the CMD prompt.  Help will be sent if needed.')
         print()
         print('     Using the CMD prompt to make dice rolls:')
         print("     C:\>traveller5_task_roller.py roll('2d6')")
@@ -980,7 +981,8 @@ if __name__ == '__main__':
         print('     C:\>traveller5_task_roller.py 2d6')
     elif sys.argv[1] in ['-v', '/v', '--version']:
         print()
-        print('     traveller5_task_roller, release version ' + __version__ + ' for Python ' + str(__py_version_req__))
+        print('     Traveller5 Task Roller, release version ' + __version__ + ' for Python ' + str(__py_version_req__))
+        log.info('Reporting: Traveller5 Task Roller release version: %s' % __version__)
     else:
         print()
         dice = ''
@@ -1001,9 +1003,10 @@ if __name__ == '__main__':
                 num = roll(dice)
                 if dice != 'TEST' and dice != 'INFO' and dice != 'MINMAXAVG':
                     print("Your '%s' roll is %s." % (dice, num))
-                    log.info("The direct call to traveller5_task_roller with '%s' resulted in %s." % (dice, num))
+                    log.info("The direct call to Traveller5 Task Roller with '%s' resulted in %s." % (dice, num))
                 elif dice == 'INFO':
-                    print('traveller5_task_roller, release version ' + __version__ + ' for Python ' + str(__py_version_req__))
+                    print('Traveller5 Task Roller, release version ' + __version__ + ' for Python ' + str(__py_version_req__))
+                    log.info('Reporting: Traveller5 Task Roller release version: %s' % __version__)
             else:
                 print('Typo of some sort --> ' + dice)
         else:
@@ -1014,6 +1017,8 @@ if __name__ == '__main__':
             num = roll(dice)
             if dice != 'TEST' and dice != 'INFO' and dice != 'MINMAXAVG':
                 print("Your '%s' roll is %s." % (dice, num))
-                log.info("The direct call to traveller5_task_roller with '%s' resulted in %s." % (dice, num))
+                log.info("The direct call to Traveller5 Task Roller with '%s' resulted in %s." % (dice, num))
             elif dice == 'INFO':
-                print('traveller5_task_roller, release version ' + __version__ + ' for Python ' + str(__py_version_req__))
+                print('Traveller5 Task Roller, release version ' + __version__ + ' for Python ' + str(__py_version_req__))
+                log.info('Reporting: Traveller5 Task Roller release version: %s' % __version__)
+                
