@@ -1,11 +1,11 @@
 #
-#   Traveller5 Task Roller 0.1.7 Beta for Windows 10
-#   Written for Python 3.11.4
+#   Traveller5 Task Roller 0.1.8 Beta for Windows 11
+#   Written for Python 3.11.6
 #
 ##############################################################
 
 """
-Traveller5 Task Roller 0.1.7 Beta for Windows 10
+Traveller5 Task Roller 0.1.8 Beta for Windows 11
 --------------------------------------------------------
 
 This program makes various dice rolls and calculates their graphs if needed.
@@ -29,9 +29,9 @@ from matplotlib import font_manager
 import logging
 
 __author__ = 'Shawn Driscoll <shawndriscoll@hotmail.com>\nshawndriscoll.blogspot.com'
-__app__ = 'Traveller5 Task Roller 0.1.7 Beta'
-__version__ = '0.1.7b'
-__py_version_req__ = (3,11,4)
+__app__ = 'Traveller5 Task Roller 0.1.8 Beta'
+__version__ = '0.1.8b'
+__py_version_req__ = (3,11,6)
 __expired_tag__ = False
 
 engine = pyttsx3.init()
@@ -196,6 +196,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.tih_die = 0
         self.tihButton_clicked()
         self.phantom_skillBox_checked = False
+        self.rollButton.setDisabled(True)
+        self.actionRoll_Dice.setDisabled(True)
 
         log.info('PyQt5 MainWindow initialized.')
         
@@ -223,6 +225,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.extrahastyButton.setDisabled(True)
             self.tihButton.setDisabled(True)
             self.rollButton.setDisabled(True)
+            self.clear_rollButton.setDisabled(True)
+            self.actionClear_Roll_History.setDisabled(True)
             self.clear_graphButton.setDisabled(True)
             self.clearButton.setDisabled(True)
             self.rollInput.setDisabled(True)
@@ -307,6 +311,14 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.diceRoll.setText('')
         self.taskResult.setText('')
         self.rollInput.clear()
+        
+        # disable roll button if target number <= 0
+        if self.characteristic.value() + self.skill.value() + self.modifier.value() <= 0:
+            self.rollButton.setDisabled(True)
+            self.actionRoll_Dice.setDisabled(True)
+        else:
+            self.rollButton.setDisabled(False)
+            self.actionRoll_Dice.setDisabled(False)
     
     def skill_changed(self):
         '''
@@ -323,6 +335,14 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.tih = True
             self.tihButton_clicked()
     
+        # disable roll button if target number <= 0
+        if self.characteristic.value() + self.skill.value() + self.modifier.value() <= 0:
+            self.rollButton.setDisabled(True)
+            self.actionRoll_Dice.setDisabled(True)
+        else:
+            self.rollButton.setDisabled(False)
+            self.actionRoll_Dice.setDisabled(False)
+    
     def modifier_changed(self):
         '''
         Clear last roll result if modifier is changed
@@ -330,6 +350,14 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.diceRoll.setText('')
         self.taskResult.setText('')
         self.rollInput.clear()
+
+        # disable roll button if target number <= 0
+        if self.characteristic.value() + self.skill.value() + self.modifier.value() <= 0:
+            self.rollButton.setDisabled(True)
+            self.actionRoll_Dice.setDisabled(True)
+        else:
+            self.rollButton.setDisabled(False)
+            self.actionRoll_Dice.setDisabled(False)
 
     def cautiousButton_clicked(self):
         '''
@@ -612,7 +640,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         '''
         self.taskDifficulty.setCurrentIndex(1)
         self.characteristic.setValue(0)
+        self.phantom_char.setChecked(False)
         self.skill.setValue(0)
+        self.phantom_skill.setChecked(False)
         self.modifier.setValue(0)
         self.diceRoll.setText('')
         self.taskResult.setText('')
@@ -666,18 +696,22 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.mpl.canvas.ax.set_xlim(xmin=-0.25, xmax=len(die_range)-0.75)
             self.mpl.canvas.ax.set_xticks(range(len(die_range)))
             self.mpl.canvas.ax.set_xticklabels(die_range)
-            ticks_font = font_manager.FontProperties(family='Optima', style='normal', size=6, weight='normal', stretch='normal')
+            #ticks_font = font_manager.FontProperties(family='Optima', style='normal', size=6, weight='normal', stretch='normal')
+            ticks_font = font_manager.FontProperties(style='normal', size=6, weight='normal', stretch='normal')
             for label in self.mpl.canvas.ax.get_xticklabels():
                 label.set_fontproperties(ticks_font)
-            title_font = font_manager.FontProperties(family='Optima', style='normal', size=10, weight='normal', stretch='normal')
+            #title_font = font_manager.FontProperties(family='Optima', style='normal', size=10, weight='normal', stretch='normal')
+            title_font = font_manager.FontProperties(style='normal', size=10, weight='normal', stretch='normal')
             label = self.mpl.canvas.ax.set_title(xper_range)
             label.set_fontproperties(title_font)
             self.mpl.canvas.ax.set_yticks(range(0, max_percent, 1))
             self.mpl.canvas.ax.set_yticklabels(yper_range)
-            ticks_font = font_manager.FontProperties(family='Optima', style='normal', size=6, weight='normal', stretch='normal')
+            #ticks_font = font_manager.FontProperties(family='Optima', style='normal', size=6, weight='normal', stretch='normal')
+            ticks_font = font_manager.FontProperties(style='normal', size=6, weight='normal', stretch='normal')
             for label in self.mpl.canvas.ax.get_yticklabels():
                 label.set_fontproperties(ticks_font)
-            ylabel_font = font_manager.FontProperties(family='Optima', style='normal', size=10, weight='normal', stretch='normal')
+            #ylabel_font = font_manager.FontProperties(family='Optima', style='normal', size=10, weight='normal', stretch='normal')
+            ylabel_font = font_manager.FontProperties(style='normal', size=10, weight='normal', stretch='normal')
             #self.mpl.canvas.ax.set_ylabel('Percentages')
             label = self.mpl.canvas.ax.set_ylabel('Percentages')
             label.set_fontproperties(ylabel_font)
@@ -763,18 +797,22 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.mpl.canvas.ax.set_xlim(xmin=-0.25, xmax=len(die_range)-0.75)
             self.mpl.canvas.ax.set_xticks(range(len(die_range)))
             self.mpl.canvas.ax.set_xticklabels(die_range)
-            ticks_font = font_manager.FontProperties(family='Optima', style='normal', size=6, weight='normal', stretch='normal')
+            #ticks_font = font_manager.FontProperties(family='Optima', style='normal', size=6, weight='normal', stretch='normal')
+            ticks_font = font_manager.FontProperties(style='normal', size=6, weight='normal', stretch='normal')
             for label in self.mpl.canvas.ax.get_xticklabels():
                 label.set_fontproperties(ticks_font)
-            title_font = font_manager.FontProperties(family='Optima', style='normal', size=10, weight='normal', stretch='normal')
+            #title_font = font_manager.FontProperties(family='Optima', style='normal', size=10, weight='normal', stretch='normal')
+            title_font = font_manager.FontProperties(style='normal', size=10, weight='normal', stretch='normal')
             label = self.mpl.canvas.ax.set_title(xper_range)
             label.set_fontproperties(title_font)
             self.mpl.canvas.ax.set_yticks(range(0, max_percent, 1))
             self.mpl.canvas.ax.set_yticklabels(yper_range)
-            ticks_font = font_manager.FontProperties(family='Optima', style='normal', size=6, weight='normal', stretch='normal')
+            #ticks_font = font_manager.FontProperties(family='Optima', style='normal', size=6, weight='normal', stretch='normal')
+            ticks_font = font_manager.FontProperties(style='normal', size=6, weight='normal', stretch='normal')
             for label in self.mpl.canvas.ax.get_yticklabels():
                 label.set_fontproperties(ticks_font)
-            ylabel_font = font_manager.FontProperties(family='Optima', style='normal', size=10, weight='normal', stretch='normal')
+            #ylabel_font = font_manager.FontProperties(family='Optima', style='normal', size=10, weight='normal', stretch='normal')
+            ylabel_font = font_manager.FontProperties(style='normal', size=10, weight='normal', stretch='normal')
             #self.mpl.canvas.ax.set_ylabel('Percentages')
             label = self.mpl.canvas.ax.set_ylabel('Percentages')
             label.set_fontproperties(ylabel_font)
@@ -785,18 +823,22 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.mpl.canvas.ax.set_xlim(xmin=-0.25, xmax=len(die_range)-0.75)
             self.mpl.canvas.ax.set_xticks(range(len(die_range)))
             self.mpl.canvas.ax.set_xticklabels(die_range)
-            ticks_font = font_manager.FontProperties(family='Optima', style='normal', size=6, weight='normal', stretch='normal')
+            #ticks_font = font_manager.FontProperties(family='Optima', style='normal', size=6, weight='normal', stretch='normal')
+            ticks_font = font_manager.FontProperties(style='normal', size=6, weight='normal', stretch='normal')
             for label in self.mpl.canvas.ax.get_xticklabels():
                 label.set_fontproperties(ticks_font)
-            title_font = font_manager.FontProperties(family='Optima', style='normal', size=10, weight='normal', stretch='normal')
+            #title_font = font_manager.FontProperties(family='Optima', style='normal', size=10, weight='normal', stretch='normal')
+            title_font = font_manager.FontProperties(style='normal', size=10, weight='normal', stretch='normal')
             label = self.mpl.canvas.ax.set_title(xper_range)
             label.set_fontproperties(title_font)
             self.mpl.canvas.ax.set_yticks(range(0, max_percent, 1))
             self.mpl.canvas.ax.set_yticklabels(yper_range)
-            ticks_font = font_manager.FontProperties(family='Optima', style='normal', size=6, weight='normal', stretch='normal')
+            #ticks_font = font_manager.FontProperties(family='Optima', style='normal', size=6, weight='normal', stretch='normal')
+            ticks_font = font_manager.FontProperties(style='normal', size=6, weight='normal', stretch='normal')
             for label in self.mpl.canvas.ax.get_yticklabels():
                 label.set_fontproperties(ticks_font)
-            ylabel_font = font_manager.FontProperties(family='Optima', style='normal', size=10, weight='normal', stretch='normal')
+            #ylabel_font = font_manager.FontProperties(family='Optima', style='normal', size=10, weight='normal', stretch='normal')
+            ylabel_font = font_manager.FontProperties(style='normal', size=10, weight='normal', stretch='normal')
             #self.mpl.canvas.ax.set_ylabel('Percentages')
             label = self.mpl.canvas.ax.set_ylabel('Percentages')
             label.set_fontproperties(ylabel_font)
@@ -896,7 +938,7 @@ if __name__ == '__main__':
             __app__ += ' [EXPIRED]'
 
         app = QApplication(sys.argv)
-        app.setQuitOnLastWindowClosed(False)
+        app.setQuitOnLastWindowClosed(True)
         
         #print(QStyleFactory.keys()) #use to find a different setStyle
         

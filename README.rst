@@ -11,29 +11,33 @@
 Some Things Required
 --------------------
 
-* **Windows 10**
+* **Windows 11**
 
-  This code has not been tested on Windows 11.
+  This code will still run on Windows 10.
 
 * **Python 3.11**
 
-  This code was written using Python 3.11.
+  This code was written using Python 3.11.6.
 
 * **PyQt5 5.15.9**
 
   PyQt5 is the framework used for displaying the Window GUI and buttons, etc.
    
-* **numpy 1.25.0**
+* **numpy 1.26.0**
 
   For building arrays.
 
-* **matplotlib 3.7.1**
+* **matplotlib 3.8.0**
 
   For graphics plotting.
 
 * **pyttsx3 2.90**
 
   For the MS Zira and MS David voices (it will try to detect other SAPI voices installed).
+  
+* **Fonts**
+
+  Simply install the fonts found in the fonts folder.
 
 
 What's in v0.1.0?
@@ -79,6 +83,12 @@ Things To-Do
 |se|
 
 **Known History**
+
+* v0.1.8b
+
+  Updated for Windows 11. Will still run on Windows 10.
+  The **Clear Roll History** button wasn't clearing new fields recently added.
+  Rolls can't be made until a target number is determined.
 
 * v0.1.7b
 
