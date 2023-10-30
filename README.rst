@@ -57,7 +57,7 @@ What's in the Initial Release?
 Don't Have Python?
 ------------------
 
-The .EXE version can be run in Windows 10.
+The .EXE version can be run in Windows 11.
 
 
 .. |ss| raw:: html
