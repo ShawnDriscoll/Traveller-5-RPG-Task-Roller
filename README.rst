@@ -84,6 +84,11 @@ Things To-Do
 
 **Known History**
 
+* v0.1.9b
+
+  Increased accuracy to 500,000 iterations.
+  Reports the mean average of rolls if applicable.
+
 * v0.1.8b
 
   Updated for Windows 11. Will still run on Windows 10.

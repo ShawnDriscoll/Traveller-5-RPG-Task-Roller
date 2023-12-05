@@ -1,11 +1,11 @@
 #
-#   Traveller5 Task Roller 0.1.8 Beta for Windows 11
+#   Traveller5 Task Roller 0.1.9 Beta for Windows 11
 #   Written for Python 3.11.6
 #
 ##############################################################
 
 """
-Traveller5 Task Roller 0.1.8 Beta for Windows 11
+Traveller5 Task Roller 0.1.9 Beta for Windows 11
 --------------------------------------------------------
 
 This program makes various dice rolls and calculates their graphs if needed.
@@ -29,8 +29,8 @@ from matplotlib import font_manager
 import logging
 
 __author__ = 'Shawn Driscoll <shawndriscoll@hotmail.com>\nshawndriscoll.blogspot.com'
-__app__ = 'Traveller5 Task Roller 0.1.8 Beta'
-__version__ = '0.1.8b'
+__app__ = 'Traveller5 Task Roller 0.1.9 Beta'
+__version__ = '0.1.9b'
 __py_version_req__ = (3,11,6)
 __expired_tag__ = False
 
@@ -56,7 +56,7 @@ rate = engine.getProperty('rate')
 volume = engine.getProperty('volume')
 
 task_difficulties = ['Easy', 'Average', 'Difficult', 'Formidable', 'Staggering', 'Hopeless', 'Impossible', 'Beyond Impossible']
-roll_accuracies = ['100', '500', '1000', '5000', '10000', '50000']
+roll_accuracies = ['50', '100', '500', '1000', '5000', '10000', '50000', '100000', '500000']
 rough_estimates = ['Optional', 'Minutes', 'An Hour', 'All Day', 'A Week', 'A Month']
 
 class aboutDialog(QDialog, Ui_aboutDialog):
@@ -750,7 +750,19 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 die_range.append(i)
                 percent.append(0)
                 bar_height.append(0)
-            print('die_range:', die_range)
+            
+            if self.dice_type == 'D44' or self.dice_type == 'D66' or self.dice_type == 'D88' or self.dice_type.find('S6') != -1:
+                print('No die_range')
+                print('No mean_avg')
+            else:
+            
+# calculate the mean average for die_range
+
+                print('die_range:', die_range)
+                j = 0
+                for i in range(len(die_range)):
+                    j += die_range[i]
+                print('mean_avg:', j / len(die_range))
             
             n = self.roll_accuracy
             num_errors = 0
@@ -933,7 +945,7 @@ if __name__ == '__main__':
     
     if len(sys.argv) < 2:
 
-        if trange[0] > 2023 or trange[1] > 11:
+        if trange[0] > 2023 or trange[1] > 12:
             __expired_tag__ = True
             __app__ += ' [EXPIRED]'
 
@@ -1003,7 +1015,7 @@ if __name__ == '__main__':
         
         app.exec_()
     
-    elif trange[0] > 2023 or trange[1] > 11:
+    elif trange[0] > 2023 or trange[1] > 12:
         __app__ += ' [EXPIRED]'
         '''
         Beta for this app has expired!
