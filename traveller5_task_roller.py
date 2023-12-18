@@ -1,11 +1,11 @@
 #
-#   Traveller5 Task Roller 0.1.9 Beta for Windows 11
+#   Traveller5 Task Roller 0.2.0 Beta for Windows 11
 #   Written for Python 3.11.6
 #
 ##############################################################
 
 """
-Traveller5 Task Roller 0.1.9 Beta for Windows 11
+Traveller5 Task Roller 0.2.0 Beta for Windows 11
 --------------------------------------------------------
 
 This program makes various dice rolls and calculates their graphs if needed.
@@ -29,8 +29,8 @@ from matplotlib import font_manager
 import logging
 
 __author__ = 'Shawn Driscoll <shawndriscoll@hotmail.com>\nshawndriscoll.blogspot.com'
-__app__ = 'Traveller5 Task Roller 0.1.9 Beta'
-__version__ = '0.1.9b'
+__app__ = 'Traveller5 Task Roller 0.2.0 Beta'
+__version__ = '0.2.0b'
 __py_version_req__ = (3,11,6)
 __expired_tag__ = False
 
@@ -751,7 +751,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 percent.append(0)
                 bar_height.append(0)
             
-            if self.dice_type == 'D44' or self.dice_type == 'D66' or self.dice_type == 'D88' or self.dice_type.find('S6') != -1:
+            if self.dice_type == 'D44' or self.dice_type == 'D66' or self.dice_type == 'D88' or self.dice_type.find('S6') != -1 \
+                or self.dice_type.find('S10') != -1:
                 print('No die_range')
                 print('No mean_avg')
             else:

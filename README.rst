@@ -57,7 +57,7 @@ What's in the Initial Release?
 Don't Have Python?
 ------------------
 
-The .EXE version can be run in Windows 11.
+The .EXE version can be run in Windows 11 and 10.
 
 
 .. |ss| raw:: html
@@ -83,6 +83,10 @@ Things To-Do
 |se|
 
 **Known History**
+
+* v0.2.0b
+
+  Now uses pydice 3.13.0.
 
 * v0.1.9b
 
