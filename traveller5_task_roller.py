@@ -1,11 +1,11 @@
 #
-#   Traveller5 Task Roller 0.2.1 Beta for Windows 11
+#   Traveller5 Task Roller 0.3.0 Beta for Windows 11
 #   Written for Python 3.11.6
 #
 ##############################################################
 
 """
-Traveller5 Task Roller 0.2.1 Beta for Windows 11
+Traveller5 Task Roller 0.3.0 Beta for Windows 11
 --------------------------------------------------------
 
 This program makes various dice rolls and calculates their graphs if needed.
@@ -29,8 +29,8 @@ from matplotlib import font_manager
 import logging
 
 __author__ = 'Shawn Driscoll <shawndriscoll@hotmail.com>\nshawndriscoll.blogspot.com'
-__app__ = 'Traveller5 Task Roller 0.2.1 Beta'
-__version__ = '0.2.1b'
+__app__ = 'Traveller5 Task Roller 0.3.0 Beta'
+__version__ = '0.3.0b'
 __py_version_req__ = (3,11,6)
 __expired_tag__ = False
 
@@ -516,9 +516,31 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
             self.value_to_beat = self.characteristic.value() + self.skill.value() + self.modifier.value()
             log.info('Value to beat: ' + str(self.characteristic.value()) + ' + ' + str(self.skill.value()) + ' + ' + str(self.modifier.value()))
-            self.roll_result = roll(self.dice_type + '# roll made')
+            #self.roll_result = roll(self.dice_type + '# roll made')
+            self.roll_result = 0
+            number_of_sixes = 0
+            number_of_ones = 0
+            for i in range(self.die_pool):
+                number_rolled = roll('1D # part of die pool')
+                self.roll_result += number_rolled
+                if number_rolled == 6:
+                    number_of_sixes += 1
+                if number_rolled == 1:
+                    number_of_ones += 1
             self.diceRoll.setText(str(self.roll_result))
-            if self.roll_result <= self.value_to_beat:
+            if number_of_ones == 3 and number_of_sixes == 3:
+                temp = 'Spectacularly\nInteresting!'
+                self.bar_color = 'y'
+                log.info('Task is spectacularly interesting!')
+            elif number_of_ones == 3:
+                temp = 'Spectacular\nSuccess!'
+                self.bar_color = 'g'
+                log.info('Task is a spectacular success!')
+            elif number_of_sixes == 3:
+                temp = 'Spectacular\nFailure!'
+                self.bar_color = 'r'
+                log.info('Task is a spectacular failure!')
+            elif self.roll_result <= self.value_to_beat:
                 temp = 'Succeeded'
                 self.bar_color = 'g'
                 log.info('Task succeeded!')

@@ -84,6 +84,10 @@ Things To-Do
 
 **Known History**
 
+* v0.3.0b
+
+  Critical success and failure results are now possible.
+
 * v0.2.1b
 
   **Cautious**, **Hasty**, and **Extra Hasty** buttons now reset properly.
