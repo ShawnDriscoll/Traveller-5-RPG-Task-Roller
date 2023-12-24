@@ -1,11 +1,11 @@
 #
-#   Traveller5 Task Roller 0.2.0 Beta for Windows 11
+#   Traveller5 Task Roller 0.2.1 Beta for Windows 11
 #   Written for Python 3.11.6
 #
 ##############################################################
 
 """
-Traveller5 Task Roller 0.2.0 Beta for Windows 11
+Traveller5 Task Roller 0.2.1 Beta for Windows 11
 --------------------------------------------------------
 
 This program makes various dice rolls and calculates their graphs if needed.
@@ -29,8 +29,8 @@ from matplotlib import font_manager
 import logging
 
 __author__ = 'Shawn Driscoll <shawndriscoll@hotmail.com>\nshawndriscoll.blogspot.com'
-__app__ = 'Traveller5 Task Roller 0.2.0 Beta'
-__version__ = '0.2.0b'
+__app__ = 'Traveller5 Task Roller 0.2.1 Beta'
+__version__ = '0.2.1b'
 __py_version_req__ = (3,11,6)
 __expired_tag__ = False
 
@@ -256,12 +256,15 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.rollInput.clear()
         self.cautious = False
         self.cautiousLabel.setText('')
+        self.cautiousButton.setDisabled(False)
         self.cautious_die = 0
         self.hasty = False
         self.hastyLabel.setText('')
+        self.hastyButton.setDisabled(False)
         self.hasty_die = 0
         self.extrahasty = False
         self.extrahastyLabel.setText('')
+        self.extrahastyButton.setDisabled(False)
         self.extrahasty_die = 0
         self.tih = False
         self.tihLabel.setText('')
@@ -269,7 +272,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.tihButton_clicked()
         self.clear_graph = True
         self.draw_graph()
-    
+
     def variableDuration_changed(self):
         '''
         Ignore Task Duration if not selected (value 0)
@@ -651,12 +654,15 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.sampleBrowser.clear()
         self.cautious = False
         self.cautiousLabel.setText('')
+        self.cautiousButton.setDisabled(False)
         self.cautious_die = 0
         self.hasty = False
         self.hastyLabel.setText('')
+        self.hastyButton.setDisabled(False)
         self.hasty_die = 0
         self.extrahasty = False
         self.extrahastyLabel.setText('')
+        self.extrahastyButton.setDisabled(False)
         self.extrahasty_die = 0
         self.tih = True
         self.tihLabel.setText('<span style=" color:#ff0000;">+1D!</span>')

@@ -84,6 +84,10 @@ Things To-Do
 
 **Known History**
 
+* v0.2.1b
+
+  **Cautious**, **Hasty**, and **Extra Hasty** buttons now reset properly.
+
 * v0.2.0b
 
   Now uses pydice 3.13.0.
