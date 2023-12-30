@@ -1,11 +1,11 @@
 #
-#   Traveller5 Task Roller 0.3.1 Beta for Windows 11
+#   Traveller5 Task Roller 0.4.0 Beta for Windows 11
 #   Written for Python 3.11.6
 #
 ##############################################################
 
 """
-Traveller5 Task Roller 0.3.1 Beta for Windows 11
+Traveller5 Task Roller 0.4.0 Beta for Windows 11
 --------------------------------------------------------
 
 This program makes various dice rolls and calculates their graphs if needed.
@@ -29,8 +29,8 @@ from matplotlib import font_manager
 import logging
 
 __author__ = 'Shawn Driscoll <shawndriscoll@hotmail.com>\nshawndriscoll.blogspot.com'
-__app__ = 'Traveller5 Task Roller 0.3.1 Beta'
-__version__ = '0.3.1b'
+__app__ = 'Traveller5 Task Roller 0.4.0 Beta'
+__version__ = '0.4.0b'
 __py_version_req__ = (3,11,6)
 __expired_tag__ = False
 
@@ -124,6 +124,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.hastyButton.clicked.connect(self.hastyButton_clicked)
         self.extrahastyButton.clicked.connect(self.extrahastyButton_clicked)
         self.tihButton.clicked.connect(self.tihButton_clicked)
+
+        self.fluxButton.clicked.connect(self.fluxButton_clicked)
+        self.goodfluxButton.clicked.connect(self.goodfluxButton_clicked)
+        self.badfluxButton.clicked.connect(self.badfluxButton_clicked)
         
         for i in range(len(roll_accuracies)):
             self.rollaccuracyType.addItem(roll_accuracies[i])
@@ -486,6 +490,102 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.tihLabel.setText('<span style=" color:#ff0000;">+1D!</span>')
             self.tih_die = 1
     
+    def fluxButton_clicked(self):
+        '''
+        Do a Flux roll
+        '''
+        self.clear_graph = False
+        self.rolled_manually = False
+        self.dice_type = 'FLUX'
+        log.debug('Rolling ' + self.dice_type)
+        roll_returned = roll(self.dice_type)
+        returned_line = self.dice_type + ' = ' + str(roll_returned)
+                
+        # Display the roll result inside the text browser
+        self.rollBrowser.append(returned_line)
+        sample = '[ '
+        for x in range(10):
+            sample += str(roll(self.dice_type)) + ' '
+        sample += ']'
+        self.sampleBrowser.clear()
+        self.sampleBrowser.append(sample)
+        log.info('Sample for die type: ' + sample)
+        self.roll_result = roll_returned
+        self.diceRoll.setText('')
+        self.taskResult.setText('')
+        if not self.ms_voice_muted:
+            engine.say('Calculating ' + self.dice_type)
+            engine.runAndWait()
+        self.bar_color = 'black'
+        self.draw_graph()
+        if not self.ms_voice_muted:
+            engine.say(str(self.roll_result))
+            engine.runAndWait()
+
+    def goodfluxButton_clicked(self):
+        '''
+        Do a Good Flux roll
+        '''
+        self.clear_graph = False
+        self.rolled_manually = False
+        self.dice_type = 'GOOD FLUX'
+        log.debug('Rolling ' + self.dice_type)
+        roll_returned = roll(self.dice_type)
+        returned_line = self.dice_type + ' = ' + str(roll_returned)
+                
+        # Display the roll result inside the text browser
+        self.rollBrowser.append(returned_line)
+        sample = '[ '
+        for x in range(10):
+            sample += str(roll(self.dice_type)) + ' '
+        sample += ']'
+        self.sampleBrowser.clear()
+        self.sampleBrowser.append(sample)
+        log.info('Sample for die type: ' + sample)
+        self.roll_result = roll_returned
+        self.diceRoll.setText('')
+        self.taskResult.setText('')
+        if not self.ms_voice_muted:
+            engine.say('Calculating ' + self.dice_type)
+            engine.runAndWait()
+        self.bar_color = 'black'
+        self.draw_graph()
+        if not self.ms_voice_muted:
+            engine.say(str(self.roll_result))
+            engine.runAndWait()
+
+    def badfluxButton_clicked(self):
+        '''
+        Do a Bad Flux roll
+        '''
+        self.clear_graph = False
+        self.rolled_manually = False
+        self.dice_type = 'BAD FLUX'
+        log.debug('Rolling ' + self.dice_type)
+        roll_returned = roll(self.dice_type)
+        returned_line = self.dice_type + ' = ' + str(roll_returned)
+                
+        # Display the roll result inside the text browser
+        self.rollBrowser.append(returned_line)
+        sample = '[ '
+        for x in range(10):
+            sample += str(roll(self.dice_type)) + ' '
+        sample += ']'
+        self.sampleBrowser.clear()
+        self.sampleBrowser.append(sample)
+        log.info('Sample for die type: ' + sample)
+        self.roll_result = roll_returned
+        self.diceRoll.setText('')
+        self.taskResult.setText('')
+        if not self.ms_voice_muted:
+            engine.say('Calculating ' + self.dice_type)
+            engine.runAndWait()
+        self.bar_color = 'black'
+        self.draw_graph()
+        if not self.ms_voice_muted:
+            engine.say(str(self.roll_result))
+            engine.runAndWait()
+
     def rollButton_clicked(self):
         '''
         Roll button was clicked.

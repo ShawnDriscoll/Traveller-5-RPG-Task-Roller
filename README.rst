@@ -84,6 +84,10 @@ Things To-Do
 
 **Known History**
 
+* v0.4.0b
+
+  Added **Flux**, **Good Flux**, and **Bad Flux** buttons.
+
 * v0.3.1b
 
   Changing the Characteristic, Skill, or Modifier values now clears the graph.
