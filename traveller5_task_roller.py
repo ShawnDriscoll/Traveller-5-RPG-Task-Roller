@@ -1,11 +1,11 @@
 #
-#   Traveller5 Task Roller 0.3.0 Beta for Windows 11
+#   Traveller5 Task Roller 0.3.1 Beta for Windows 11
 #   Written for Python 3.11.6
 #
 ##############################################################
 
 """
-Traveller5 Task Roller 0.3.0 Beta for Windows 11
+Traveller5 Task Roller 0.3.1 Beta for Windows 11
 --------------------------------------------------------
 
 This program makes various dice rolls and calculates their graphs if needed.
@@ -29,8 +29,8 @@ from matplotlib import font_manager
 import logging
 
 __author__ = 'Shawn Driscoll <shawndriscoll@hotmail.com>\nshawndriscoll.blogspot.com'
-__app__ = 'Traveller5 Task Roller 0.3.0 Beta'
-__version__ = '0.3.0b'
+__app__ = 'Traveller5 Task Roller 0.3.1 Beta'
+__version__ = '0.3.1b'
 __py_version_req__ = (3,11,6)
 __expired_tag__ = False
 
@@ -308,6 +308,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         '''
         Clear last roll result if characteristic is changed
         '''
+
+        self.clear_graph = True
+        self.draw_graph()
+
         if not self.phantom_skillBox_checked:
             self.skill.setValue(0)
         self.modifier.setValue(0)
@@ -327,6 +331,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         '''
         Clear last roll result if skill is changed
         '''
+
+        self.clear_graph = True
+        self.draw_graph()
+
         self.modifier.setValue(0)
         self.diceRoll.setText('')
         self.taskResult.setText('')
@@ -350,6 +358,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         '''
         Clear last roll result if modifier is changed
         '''
+
+        self.clear_graph = True
+        self.draw_graph()
+
         self.diceRoll.setText('')
         self.taskResult.setText('')
         self.rollInput.clear()

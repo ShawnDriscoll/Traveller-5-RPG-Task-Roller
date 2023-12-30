@@ -84,6 +84,10 @@ Things To-Do
 
 **Known History**
 
+* v0.3.1b
+
+  Changing the Characteristic, Skill, or Modifier values now clears the graph.
+
 * v0.3.0b
 
   Critical success and failure results are now possible.
