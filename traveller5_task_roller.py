@@ -589,7 +589,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def rollButton_clicked(self):
         '''
         Roll button was clicked.
-        Try to roll under or equal to the characteristic asset + skills asset + plus modifiers.
+        Try to roll under or equal to the characteristic asset + skills asset + modifiers.
         '''
         self.die_pool = self.num_dice
         log.info('Starting die pool: ' + str(self.num_dice) + 'D')
@@ -640,6 +640,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 if number_rolled == 1:
                     number_of_ones += 1
             self.diceRoll.setText(str(self.roll_result))
+            log.info('Rolled: ' + str(self.roll_result))
             if number_of_ones == 3 and number_of_sixes == 3:
                 temp = 'Spectacularly\nInteresting!'
                 self.bar_color = 'y'
