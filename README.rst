@@ -54,35 +54,15 @@ What's in the Initial Release?
     :target: https://www.youtube.com/watch?v=bVR5ZZbAGLc
 
 
-Don't Have Python?
-------------------
-
-The .EXE version can be run in Windows 11 and 10.
-
-
-.. |ss| raw:: html
-
-    <strike>
-
-.. |se| raw:: html
-
-    </strike>
-
 Things To-Do
 ------------
 
 | Instruction manual.
 | Cheat codes.
-|ss|
 
-| Add Task Duration settings.
-| Add more things to Clear All.
-| Fix Tool Tips.
-| Start on a To-Do.
 
-|se|
-
-**Known History**
+Known History
+-------------
 
 * v0.4.0b
 
@@ -147,6 +127,9 @@ Things To-Do
 * v0.0.1b
 
   Initial release.
+
+
+The Traveller game in all forms is owned by Far Future Enterprises. Copyright 1977 - 2024 Far Future Enterprises. Traveller is a registered trademark of Far Future Enterprises.
 
 
 Contact
